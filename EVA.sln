@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29326.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVA.Protocol", "EVA.Protocol\EVA.Protocol.csproj", "{EA4C6575-C474-44BA-99F8-5C68214F9426}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVA.Common", "EVA.Common\EVA.Common.csproj", "{69D7AEF7-0C67-4C0B-9541-F23927B157CC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EA4C6575-C474-44BA-99F8-5C68214F9426}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA4C6575-C474-44BA-99F8-5C68214F9426}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA4C6575-C474-44BA-99F8-5C68214F9426}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA4C6575-C474-44BA-99F8-5C68214F9426}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69D7AEF7-0C67-4C0B-9541-F23927B157CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69D7AEF7-0C67-4C0B-9541-F23927B157CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69D7AEF7-0C67-4C0B-9541-F23927B157CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69D7AEF7-0C67-4C0B-9541-F23927B157CC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {399A1DFB-EA77-4024-920B-29FB534EABBE}
+	EndGlobalSection
+EndGlobal
