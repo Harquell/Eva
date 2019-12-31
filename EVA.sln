@@ -3,9 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVA.Protocol", "EVA.Protocol\EVA.Protocol.csproj", "{EA4C6575-C474-44BA-99F8-5C68214F9426}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EVA.Protocol", "EVA.Protocol\EVA.Protocol.csproj", "{EA4C6575-C474-44BA-99F8-5C68214F9426}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVA.Common", "EVA.Common\EVA.Common.csproj", "{69D7AEF7-0C67-4C0B-9541-F23927B157CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EVA.Common", "EVA.Common\EVA.Common.csproj", "{69D7AEF7-0C67-4C0B-9541-F23927B157CC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{94AE819D-44A6-4F9A-B0CD-102590B77165}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\CommunicationCharts.md = Docs\CommunicationCharts.md
+		Docs\MessageTypes.md = Docs\MessageTypes.md
+		TodoList.md = TodoList.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EVA.Client", "EVA.Client\EVA.Client.csproj", "{D9300BB8-9BFA-4E94-A160-E958C9AEC99D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{40074AF6-269B-40C0-892F-E6DC60A7BBD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVA.Server.Common", "EVA.Server.Common\EVA.Server.Common.csproj", "{4B006DBE-E493-4F1C-8562-7F7383F55E77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVA.Server.Auth", "EVA.Server.Auth\EVA.Server.Auth.csproj", "{E1ADA3C2-0354-45A3-BC54-F3D17B8E543D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +36,25 @@ Global
 		{69D7AEF7-0C67-4C0B-9541-F23927B157CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69D7AEF7-0C67-4C0B-9541-F23927B157CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69D7AEF7-0C67-4C0B-9541-F23927B157CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9300BB8-9BFA-4E94-A160-E958C9AEC99D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9300BB8-9BFA-4E94-A160-E958C9AEC99D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9300BB8-9BFA-4E94-A160-E958C9AEC99D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9300BB8-9BFA-4E94-A160-E958C9AEC99D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B006DBE-E493-4F1C-8562-7F7383F55E77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B006DBE-E493-4F1C-8562-7F7383F55E77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B006DBE-E493-4F1C-8562-7F7383F55E77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B006DBE-E493-4F1C-8562-7F7383F55E77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1ADA3C2-0354-45A3-BC54-F3D17B8E543D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1ADA3C2-0354-45A3-BC54-F3D17B8E543D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1ADA3C2-0354-45A3-BC54-F3D17B8E543D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1ADA3C2-0354-45A3-BC54-F3D17B8E543D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4B006DBE-E493-4F1C-8562-7F7383F55E77} = {40074AF6-269B-40C0-892F-E6DC60A7BBD2}
+		{E1ADA3C2-0354-45A3-BC54-F3D17B8E543D} = {40074AF6-269B-40C0-892F-E6DC60A7BBD2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {399A1DFB-EA77-4024-920B-29FB534EABBE}

@@ -1,27 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using EVA.Protocol.Interfaces;
+using System;
+using static EVA.Protocol.Constants;
 
 namespace EVA.Protocol.Messages
 {
-    public interface IMessageBase
+    public abstract class MessageBase
     {
-        public abstract ushort PacketId { get; }
+        public const ushort Id = 0;
+        public ushort PacketId => Id;
 
-        public abstract byte[] Serialize();
+        public Guid PacketUId { get; set; }
 
-        protected abstract IMessageBase Deserialize();
-    }
+        protected MessageBase()
+        {
+            PacketUId = Guid.NewGuid();
+        }
 
-    public abstract class MessageBase<T> : IMessageBase where T : IMessageBase
-    {
-        public abstract ushort PacketId { get; }
+        protected abstract void SerializeProperties(IDataWriter writer);
 
-        protected abstract T Deserialize();
+        protected abstract void DeserializeProperties(IDataReader reader);
 
-        public abstract byte[] Serialize();
+        public void Serialize(IDataWriter writer)
+        {
+            writer.WriteUShort(PacketId);
+            writer.WriteBytes(PacketUId.ToByteArray());
+            SerializeProperties(writer);
+        }
 
-        IMessageBase IMessageBase.Deserialize()
-            => Deserialize();
+        public void Deserialize(IDataReader reader)
+        {
+            PacketUId = new Guid(reader.ReadBytes());
+            DeserializeProperties(reader);
+        }
     }
 }

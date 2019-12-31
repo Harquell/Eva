@@ -5,7 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Messages\Authentication\" />
+    <ProjectReference Include="..\EVA.Common\EVA.Common.csproj" />
+    <ProjectReference Include="..\EVA.Protocol\EVA.Protocol.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,3 +3,11 @@ EVA.Common/obj
 EVA.Common/bin
 EVA.Protocol/obj
 EVA.Protocol/bin
+EVA.Server.Common/obj
+EVA.Server.Common/bin
+EVA.Server.Auth/obj
+EVA.Server.Auth/bin
+EVA.Common/obj
+EVA.Common/bin
+EVA.Client/obj
+EVA.Client/bin
