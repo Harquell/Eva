@@ -5,7 +5,7 @@ using System;
 
 namespace EVA.Server.Auth
 {
-    internal class Program
+    internal static class Program
     {
         private static void Main(string[] args)
         {
@@ -23,7 +23,7 @@ namespace EVA.Server.Auth
                 server.Start();
             }
             catch
-            {
+            { //Nop
             }
 
             Console.Title = string.Format("[Auth] Eva Server ({0}:{1})", authCfgMngr.Config.IPAddress, authCfgMngr.Config.Port);

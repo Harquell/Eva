@@ -1,6 +1,5 @@
 ﻿using EVA.Protocol.Interfaces;
 using System;
-using static EVA.Protocol.Constants;
 
 namespace EVA.Protocol.Messages
 {

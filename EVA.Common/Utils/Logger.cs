@@ -1,9 +1,7 @@
 ﻿using EVA.Common.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace EVA.Common
+namespace EVA.Common.Utils
 {
     public class Logger : IInitializable, IDisposable
     {
