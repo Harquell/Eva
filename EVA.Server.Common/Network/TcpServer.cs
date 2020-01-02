@@ -1,8 +1,13 @@
 ﻿using EVA.Common.Interfaces;
+using EVA.Common.Utils;
+using EVA.Server.Common.Interfaces;
+using EVA.Server.Common.Managers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 
 namespace EVA.Server.Common.Network
 {
@@ -12,6 +17,7 @@ namespace EVA.Server.Common.Network
         private IPAddress _iPAddress;
         private readonly List<TcpClient> _clients;
         private readonly int _port;
+        private Type _clientDataType;
 
         public bool IsRunning { get; private set; }
 
@@ -24,8 +30,18 @@ namespace EVA.Server.Common.Network
 
         public void Init()
         {
-            _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            _socket.Bind(new IPEndPoint(_iPAddress, _port));
+            try
+            {
+                _clientDataType = Assembly.GetEntryAssembly().GetTypes().First(x => x.GetInterface(nameof(IClientData)) != null);
+                _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                _socket.Bind(new IPEndPoint(_iPAddress, _port));
+
+                MessageManager.Instance.Init();
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e);
+            }
         }
 
         public void Start()
@@ -50,7 +66,7 @@ namespace EVA.Server.Common.Network
         {
             Socket socket = _socket.EndAccept(result);
 
-            TcpClient client = new TcpClient(socket);
+            TcpClient client = new TcpClient(socket, (IClientData)Activator.CreateInstance(_clientDataType));
             _clients.Add(client);
             client.Init();
 

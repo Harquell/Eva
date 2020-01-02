@@ -1,7 +1,10 @@
 ﻿using EVA.Common.Interfaces;
 using EVA.Protocol.Messages;
 using EVA.Protocol.Utils;
+using EVA.Server.Common.Interfaces;
+using EVA.Server.Common.Managers;
 using System;
+using System.Net;
 using System.Net.Sockets;
 using static EVA.Protocol.Constants;
 
@@ -13,9 +16,13 @@ namespace EVA.Server.Common.Network
 
         private byte[] _buffer;
 
-        public TcpClient(Socket socket)
+        public IClientData ClientData { get; private set; }
+        public EndPoint EndPoint => _socket.RemoteEndPoint;
+
+        public TcpClient(Socket socket, IClientData data)
         {
             _socket = socket;
+            ClientData = data;
         }
 
         public void Init()
@@ -35,10 +42,7 @@ namespace EVA.Server.Common.Network
             byte[] buffer = new byte[size];
             Array.Copy(_buffer, buffer, size);
 
-            using BigEndianReader reader = new BigEndianReader(buffer);
-            int packetId = reader.ReadUShort();
-            //TODO: Generate message object using packetId
-            //TODO: Handle packet
+            MessageManager.Instance.HandleMessage(buffer, this);
 
             BeginReceive();
         }

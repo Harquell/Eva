@@ -1,4 +1,5 @@
 ﻿using EVA.Common.Managers;
+using EVA.Common.Utils;
 using EVA.Server.Auth.Config;
 using EVA.Server.Common.Network;
 using System;
@@ -10,6 +11,7 @@ namespace EVA.Server.Auth
         private static void Main(string[] args)
         {
             Console.Title = "[Auth] Eva Server (starting ...)";
+            Logger.Instance.LoggerLevel = Logger.LoggerType.DEBUG;
 
             var authCfgMngr = ConfigurationManager<AuthConfig>.Instance; // Parfait
             authCfgMngr.Load();
@@ -23,7 +25,8 @@ namespace EVA.Server.Auth
                 server.Start();
             }
             catch
-            { //Nop
+            {
+                authCfgMngr.Save();
             }
 
             Console.Title = string.Format("[Auth] Eva Server ({0}:{1})", authCfgMngr.Config.IPAddress, authCfgMngr.Config.Port);

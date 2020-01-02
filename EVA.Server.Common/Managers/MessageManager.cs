@@ -1,0 +1,87 @@
+﻿using EVA.Common.Interfaces;
+using EVA.Common.Utils;
+using EVA.Protocol.Messages;
+using EVA.Protocol.Utils;
+using EVA.Server.Common.Attributes;
+using EVA.Server.Common.Interfaces;
+using EVA.Server.Common.Network;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+
+namespace EVA.Server.Common.Managers
+{
+    public class MessageManager : IInitializable
+    {
+        public static MessageManager Instance => _instance ?? (_instance = new MessageManager());
+        private static MessageManager _instance;
+
+        public delegate void HandleMessageDelegate(MessageBase message, IClientData client);
+
+        private Dictionary<ushort, Type> _messageTypes;
+        private Dictionary<ushort, HandleMessageDelegate> _messageHandlers;
+
+        private MessageManager()
+        {
+            _messageTypes = new Dictionary<ushort, Type>();
+            _messageHandlers = new Dictionary<ushort, HandleMessageDelegate>();
+        }
+
+        public void Init()
+        {
+            try
+            {
+                Logger.Info("Init MessageManager");
+                InitMessageTypes();
+                InitMessageHandlers();
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e);
+            }
+        }
+
+        private void InitMessageTypes()
+        {
+            Assembly messageAssembly = typeof(MessageBase).Assembly;
+            _messageTypes = messageAssembly
+                .GetTypes()
+                .Where(x => x.IsSubclassOf(typeof(MessageBase)))
+                .ToDictionary(t => (ushort)t.GetField("PacketId").GetValue(null), t => t);
+        }
+
+        private void InitMessageHandlers()
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+
+            _messageHandlers = assembly.GetTypes()
+                .SelectMany(t => t.GetMethods())
+                .Where(m => m.GetCustomAttributes<MessageHandlerAttribute>().Any())
+                .ToDictionary(
+                    m => m.GetCustomAttribute<MessageHandlerAttribute>().PacketId,
+                    m => (HandleMessageDelegate)Delegate.CreateDelegate(typeof(HandleMessageDelegate), m)
+                );
+        }
+
+        public void HandleMessage(byte[] message, TcpClient client)
+        {
+            using BigEndianReader reader = new BigEndianReader(message);
+            ushort packetId = reader.ReadUShort();
+            if (!_messageTypes.ContainsKey(packetId))
+            {
+                Logger.Error(string.Format("Received PacketId({0}) from {1} doesn't correspond to a message type", packetId, client.EndPoint));
+                return;
+            }
+            if (!_messageHandlers.ContainsKey(packetId))
+            {
+                Logger.Error(string.Format("Received PacketId({0}) from {1} not handled", packetId, client.EndPoint));
+                return;
+            }
+            MessageBase msg = Activator.CreateInstance(_messageTypes[packetId]) as MessageBase;
+            msg.Deserialize(reader);
+
+            _messageHandlers[packetId](msg, client.ClientData);
+        }
+    }
+}
