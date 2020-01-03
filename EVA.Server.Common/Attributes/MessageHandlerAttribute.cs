@@ -2,7 +2,7 @@
 
 namespace EVA.Server.Common.Attributes
 {
-    internal class MessageHandlerAttribute : Attribute
+    public class MessageHandlerAttribute : Attribute
     {
         public ushort PacketId { get; set; }
 

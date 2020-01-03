@@ -1,7 +1,10 @@
 ﻿using EVA.Common.Managers;
 using EVA.Common.Utils;
+using EVA.Protocol.Messages.Common;
 using EVA.Server.Auth.Config;
+using EVA.Server.Auth.Types;
 using EVA.Server.Common.Network;
+using EVA.Server.Common.Attributes;
 using System;
 
 namespace EVA.Server.Auth
@@ -42,6 +45,11 @@ namespace EVA.Server.Auth
 
             Console.Read();
             authCfgMngr.Save();
+        }
+
+        [MessageHandler(1)]
+        public static void PingHandler(PingMessage message, AuthClientData clientData)
+        {
         }
     }
 }

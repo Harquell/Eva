@@ -44,16 +44,19 @@ namespace EVA.Server.Common.Managers
 
         private void InitMessageTypes()
         {
+            Logger.Info("Initializing message types");
             Assembly messageAssembly = typeof(MessageBase).Assembly;
             _messageTypes = messageAssembly
                 .GetTypes()
                 .Where(x => x.IsSubclassOf(typeof(MessageBase)))
-                .ToDictionary(t => (ushort)t.GetField("PacketId").GetValue(null), t => t);
+                .ToDictionary(t => (ushort)t.GetField("Id").GetValue(null), t => t);
+            Logger.Debug(string.Format("{0} messages founded", _messageTypes.Count));
         }
 
         private void InitMessageHandlers()
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
+            Logger.Info("Initializing message handlers");
+            Assembly assembly = Assembly.GetEntryAssembly();
 
             _messageHandlers = assembly.GetTypes()
                 .SelectMany(t => t.GetMethods())
@@ -62,6 +65,7 @@ namespace EVA.Server.Common.Managers
                     m => m.GetCustomAttribute<MessageHandlerAttribute>().PacketId,
                     m => (HandleMessageDelegate)Delegate.CreateDelegate(typeof(HandleMessageDelegate), m)
                 );
+            Logger.Debug(string.Format("{0} handlers founded", _messageHandlers.Count));
         }
 
         public void HandleMessage(byte[] message, TcpClient client)
@@ -80,6 +84,8 @@ namespace EVA.Server.Common.Managers
             }
             MessageBase msg = Activator.CreateInstance(_messageTypes[packetId]) as MessageBase;
             msg.Deserialize(reader);
+
+            Logger.Debug(string.Format("new packet data [{0}]{1}", packetId, msg.GetType().Name));
 
             _messageHandlers[packetId](msg, client.ClientData);
         }
