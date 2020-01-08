@@ -7,6 +7,8 @@ namespace EVA.Protocol.Messages.Common
     {
         public new const ushort Id = 1;
 
+
+
         public DateTime PingTime { get; set; }
 
         protected override void SerializeProperties(IDataWriter writer)
@@ -18,5 +20,8 @@ namespace EVA.Protocol.Messages.Common
         {
             PingTime = new DateTime(reader.ReadLong());
         }
+
+        protected override ushort GetPacketId()
+            => 1;
     }
 }

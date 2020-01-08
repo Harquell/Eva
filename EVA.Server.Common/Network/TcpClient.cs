@@ -1,4 +1,5 @@
 ﻿using EVA.Common.Interfaces;
+using EVA.Common.Utils;
 using EVA.Protocol.Messages;
 using EVA.Protocol.Utils;
 using EVA.Server.Common.Interfaces;
@@ -38,13 +39,20 @@ namespace EVA.Server.Common.Network
 
         private void ReceiveCallback(IAsyncResult result)
         {
-            int size = _socket.EndReceive(result);
-            byte[] buffer = new byte[size];
-            Array.Copy(_buffer, buffer, size);
+            try
+            {
+                int size = _socket.EndReceive(result);
+                byte[] buffer = new byte[size];
+                Array.Copy(_buffer, buffer, size);
 
-            MessageManager.Instance.HandleMessage(buffer, this);
+                MessageManager.Instance.HandleMessage(buffer, this);
 
-            BeginReceive();
+                BeginReceive();
+            }
+            catch (Exception)
+            {
+                Dispose();
+            }
         }
 
         public void SendMessage(MessageBase message)
@@ -81,6 +89,7 @@ namespace EVA.Server.Common.Network
                     _socket.Dispose();
                 }
 
+                Logger.Debug("Client il est mort");
                 _buffer = null;
 
                 disposedValue = true;

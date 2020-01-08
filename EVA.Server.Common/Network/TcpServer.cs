@@ -67,6 +67,7 @@ namespace EVA.Server.Common.Network
             Socket socket = _socket.EndAccept(result);
 
             TcpClient client = new TcpClient(socket, (IClientData)Activator.CreateInstance(_clientDataType));
+            Logger.Debug("Nouveau client");
             _clients.Add(client);
             client.Init();
 

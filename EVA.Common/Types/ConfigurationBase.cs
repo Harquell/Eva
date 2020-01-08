@@ -21,7 +21,7 @@ namespace EVA.Common.Types
             _directoryPath = dirPath;
         }
 
-        public static void Serialize<T>(ConfigurationBase c) where T : ConfigurationBase
+        public static void Serialize<T>(T c) where T : ConfigurationBase
         {
             XmlSerializer serializer = new XmlSerializer(typeof(T));
             Directory.CreateDirectory(c._directoryPath);

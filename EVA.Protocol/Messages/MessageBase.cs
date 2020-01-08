@@ -17,11 +17,13 @@ namespace EVA.Protocol.Messages
 
         protected abstract void SerializeProperties(IDataWriter writer);
 
+        protected abstract ushort GetPacketId();
+
         protected abstract void DeserializeProperties(IDataReader reader);
 
         public void Serialize(IDataWriter writer)
         {
-            writer.WriteUShort(PacketId);
+            writer.WriteUShort(GetPacketId());
             writer.WriteBytes(PacketUId.ToByteArray());
             SerializeProperties(writer);
         }

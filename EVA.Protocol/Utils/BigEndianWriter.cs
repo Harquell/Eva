@@ -16,9 +16,8 @@ namespace EVA.Protocol.Utils
             {
                 try
                 {
-                    int size = Convert.ToInt32(_stream.Length);
-                    byte[] array = new byte[size];
-                    _stream.Read(array, 0, size);
+                    var stream = _stream as MemoryStream;
+                    var array = stream.ToArray();
                     return array;
                 }
                 catch (Exception)

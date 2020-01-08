@@ -11,3 +11,7 @@ EVA.Common/obj
 EVA.Common/bin
 EVA.Client/obj
 EVA.Client/bin
+EVA.Client.Console/bin
+EVA.Client.Console/obj
+EVA.Server.World/bin
+EVA.Server.World/obj

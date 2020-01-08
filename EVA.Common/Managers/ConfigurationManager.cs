@@ -15,7 +15,7 @@ namespace EVA.Common.Managers
 
         public void Save()
         {
-            ConfigurationBase.Serialize<T>(Config);
+            ConfigurationBase.Serialize(Config);
         }
 
         public bool TrySave()

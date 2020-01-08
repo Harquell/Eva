@@ -6,6 +6,8 @@ using EVA.Server.Auth.Types;
 using EVA.Server.Common.Network;
 using EVA.Server.Common.Attributes;
 using System;
+using EVA.Protocol.Messages;
+using EVA.Server.Common.Interfaces;
 
 namespace EVA.Server.Auth
 {
@@ -48,8 +50,10 @@ namespace EVA.Server.Auth
         }
 
         [MessageHandler(1)]
-        public static void PingHandler(PingMessage message, AuthClientData clientData)
+        public static void PingHandler(MessageBase message, IClientData clientData)
         {
+            var msg = message as PingMessage;
+            Console.WriteLine("Wallah j'ai un ping : " + msg.PingTime);
         }
     }
 }

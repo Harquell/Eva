@@ -20,5 +20,8 @@ namespace EVA.Protocol.Messages.Common
             ProtocolRequired = reader.ReadUShort();
             ProtocolVersion = reader.ReadUShort();
         }
+
+        protected override ushort GetPacketId()
+            => 99;
     }
 }

@@ -21,5 +21,8 @@ namespace EVA.Protocol.Messages.Common
             PongTime = new DateTime(reader.ReadLong());
             TargetedPing = new Guid(reader.ReadBytes());
         }
+
+        protected override ushort GetPacketId()
+            => 2;
     }
 }
