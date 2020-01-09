@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EVA.Protocol.Utils
 {
-    public class BigEndianReader : IDataReader, IDisposable
+    public class BigEndianReader : IDataReader
     {
         public BigEndianReader(byte[] buffer)
         {

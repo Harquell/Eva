@@ -1,8 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace EVA.Protocol.Interfaces
 {
-    public interface IDataReader
+    public interface IDataReader : IDisposable
     {
         int Position { get; }
 

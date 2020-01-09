@@ -1,8 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace EVA.Protocol.Interfaces
 {
-    public interface IDataWriter
+    public interface IDataWriter : IDisposable
     {
         byte[] Data { get; }
         int Position { get; }
