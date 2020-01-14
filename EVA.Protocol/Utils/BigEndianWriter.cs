@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EVA.Protocol.Utils
 {
-    public class BigEndianWriter : IDataWriter, IDisposable
+    public class BigEndianWriter : IDataWriter
     {
         private BinaryWriter _writer;
         private Stream _stream => _writer?.BaseStream;
