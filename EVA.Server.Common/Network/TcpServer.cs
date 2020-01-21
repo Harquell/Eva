@@ -15,7 +15,7 @@ namespace EVA.Server.Common.Network
     {
         private Socket _socket;
         private IPAddress _iPAddress;
-        private readonly List<TcpClient> _clients;
+        public readonly List<TcpClient> Clients;
         private readonly int _port;
         private Type _clientDataType;
 
@@ -25,7 +25,7 @@ namespace EVA.Server.Common.Network
         {
             IPAddress.TryParse(ipAddress, out _iPAddress);
             _port = port;
-            _clients = new List<TcpClient>();
+            Clients = new List<TcpClient>();
         }
 
         public void Init()
@@ -68,7 +68,7 @@ namespace EVA.Server.Common.Network
 
             TcpClient client = new TcpClient(socket, (IClientData)Activator.CreateInstance(_clientDataType));
             Logger.Debug("Nouveau client");
-            _clients.Add(client);
+            Clients.Add(client);
             client.Init();
 
             BeginAccept();

@@ -4,15 +4,18 @@ using EVA.Protocol.Messages.Common;
 using EVA.Server.Auth.Config;
 using EVA.Server.Auth.Types;
 using EVA.Server.Common.Network;
-using EVA.Server.Common.Attributes;
+using EVA.Common.Attributes;
 using System;
 using EVA.Protocol.Messages;
 using EVA.Server.Common.Interfaces;
+using EVA.Common.Attributes;
+using System.Linq;
 
 namespace EVA.Server.Auth
 {
     internal static class Program
     {
+        static TcpServer _server;
         private static void Main(string[] args)
         {
             Console.Title = "[Auth] Eva Server (starting ...)";
@@ -26,6 +29,7 @@ namespace EVA.Server.Auth
             using TcpServer server = new TcpServer(authCfgMngr.Config.IPAddress, authCfgMngr.Config.Port);
             try
             {
+                _server = server;
                 server.Init();
                 server.Start();
             }
@@ -54,6 +58,16 @@ namespace EVA.Server.Auth
         {
             var msg = message as PingMessage;
             Console.WriteLine("Wallah j'ai un ping : " + msg.PingTime);
+        }
+
+        [MessageHandler(3)]
+        public static void ChatHandler(MessageBase message, IClientData clientData)
+        {
+            var msg = message as ChatMessage;
+            foreach(var client in _server.Clients.Where(x => x.ClientData != clientData))
+            {
+                client.SendMessage(msg);
+            }
         }
     }
 }

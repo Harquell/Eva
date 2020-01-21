@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EVA.Server.Common.Attributes
+namespace EVA.Common.Attributes
 {
     public class MessageHandlerAttribute : Attribute
     {

@@ -1,4 +1,5 @@
-﻿using EVA.Common.Interfaces;
+﻿using EVA.Client.Managers;
+using EVA.Common.Interfaces;
 using EVA.Common.Utils;
 using EVA.Protocol.Interfaces;
 using EVA.Protocol.Messages;
@@ -6,13 +7,16 @@ using EVA.Protocol.Utils;
 using System;
 using System.Net;
 using System.Net.Sockets;
+using static EVA.Protocol.Constants;
 
 namespace EVA.Client.Network
 {
-    internal class TcpClient : IInitializable, IStartable, IDisposable
+    public class TcpClient : IInitializable, IStartable, IDisposable
     {
         private readonly EndPoint _serverEndpoint;
+        public EndPoint EndPoint => _serverEndpoint;
         private Socket _socket;
+        private byte[] _buffer;
 
         public TcpClient(string ip, int port)
         {
@@ -28,6 +32,7 @@ namespace EVA.Client.Network
         public void Start()
         {
             _socket.Connect(_serverEndpoint);
+            BeginReceive();
         }
 
         public void SendMessage(MessageBase message)
@@ -60,8 +65,33 @@ namespace EVA.Client.Network
             }
         }
 
+        private void BeginReceive()
+        {
+            _buffer = new byte[BUFFER_SIZE];
+            _socket.BeginReceive(_buffer, 0, BUFFER_SIZE, SocketFlags.None, new AsyncCallback(ReceiveCallback), this);
+        }
+
+        private void ReceiveCallback(IAsyncResult result)
+        {
+            try
+            {
+                int size = _socket.EndReceive(result);
+                byte[] buffer = new byte[size];
+                Array.Copy(_buffer, buffer, size);
+
+                MessageManager.Instance.HandleMessage(buffer, this);
+
+                BeginReceive();
+            }
+            catch (Exception)
+            {
+                Dispose();
+            }
+        }
+
         public void Stop()
         {
+            
             _socket.Disconnect(true);
         }
 

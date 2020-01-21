@@ -3,21 +3,20 @@ using EVA.Common.Utils;
 using EVA.Protocol.Messages;
 using EVA.Protocol.Utils;
 using EVA.Common.Attributes;
-using EVA.Server.Common.Interfaces;
-using EVA.Server.Common.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using EVA.Client.Network;
 
-namespace EVA.Server.Common.Managers
+namespace EVA.Client.Managers
 {
     public class MessageManager : IInitializable
     {
         public static MessageManager Instance => _instance ?? (_instance = new MessageManager());
         private static MessageManager _instance;
 
-        public delegate void HandleMessageDelegate(MessageBase message, IClientData client);
+        public delegate void HandleMessageDelegate(MessageBase message);
 
         private Dictionary<ushort, Type> _messageTypes;
         private Dictionary<ushort, HandleMessageDelegate> _messageHandlers;
@@ -87,7 +86,7 @@ namespace EVA.Server.Common.Managers
 
             Logger.Debug(string.Format("new packet data [{0}]{1}", packetId, msg.GetType().Name));
 
-            _messageHandlers[packetId](msg, client.ClientData);
+            _messageHandlers[packetId](msg);
         }
     }
 }

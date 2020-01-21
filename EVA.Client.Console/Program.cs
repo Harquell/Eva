@@ -1,7 +1,12 @@
-﻿using EVA.Protocol.Messages.Common;
+﻿using EVA.Client.Managers;
+using EVA.Client.Network;
+using EVA.Common.Attributes;
+using EVA.Common.Utils;
+using EVA.Protocol.Messages;
+using EVA.Protocol.Messages.Common;
 using EVA.Protocol.Utils;
 using System;
-using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace EVA.Client.Console
 {
@@ -9,20 +14,54 @@ namespace EVA.Client.Console
     {
         static void Main(string[] args)
         {
-            Socket chausette = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            chausette.Connect("127.0.0.1", 443);
+            MessageManager.Instance.Init();
+            TcpClient chaussette = new TcpClient("127.0.0.1", 443);
+            chaussette.Init();
+            chaussette.Start();
+            string username = string.Empty;
 
-            while(System.Console.ReadLine() != string.Empty)
+            while(true)
             {
-                using BigEndianWriter writer = new BigEndianWriter();
-                var pingMsg = new PingMessage()
+                string text = System.Console.ReadLine();
+                if (text == string.Empty)
+                    continue;   
+                if(text == "exit")
                 {
-                    PingTime = DateTime.Now
-                };
-                pingMsg.Serialize(writer);
-                var buffer = writer.Data;
-                chausette.Send(buffer, buffer.Length, SocketFlags.None);
+                    chaussette.Stop();
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    if(text.Split(' ')[0] == "username" && text.Split(' ').Length >= 2)
+                    {
+                        username = text.Split(' ')[1];
+                    }
+                    else
+                    {
+                        Task.Run(() =>
+                        {
+
+                            while (true)
+                            {
+                                ChatMessage msg = new ChatMessage
+                                {
+                                    Auteur = username,
+                                    Message = text,
+                                    SentAt = DateTime.Now
+                                };
+                                chaussette.SendMessage(msg);
+                            }
+                        });
+                    }
+                }
             }
+        }
+
+        [MessageHandler(3)]
+        public static void HandleChatMessage(MessageBase msg)
+        {
+            ChatMessage cmsg = (ChatMessage)msg;
+            System.Console.WriteLine($"[{cmsg.SentAt}] {cmsg.Auteur} => {cmsg.Message}");
         }
     }
 }
