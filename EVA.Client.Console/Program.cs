@@ -2,7 +2,6 @@
 using EVA.Protocol.Utils;
 using System;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 
 namespace EVA.Client.Console
 {

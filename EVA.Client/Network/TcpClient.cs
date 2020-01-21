@@ -38,6 +38,7 @@ namespace EVA.Client.Network
                 message.Serialize(writer);
                 byte[] buffer = writer.Data;
                 _socket.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(SendMessageCallback), _socket);
+
                 Logger.Debug(string.Format("Sending {0} message", message.GetType()));
             }
             catch (Exception e)
@@ -74,11 +75,8 @@ namespace EVA.Client.Network
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects).
+                    _socket.Dispose();
                 }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
 
                 disposedValue = true;
             }
